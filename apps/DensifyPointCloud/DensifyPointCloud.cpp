@@ -56,6 +56,8 @@ int nProcessPriority;
 unsigned nMaxThreads;
 String strConfigFileName;
 boost::program_options::variables_map vm;
+
+bool bIsCustomMode;
 } // namespace OPT
 
 // initialize and parse the command line parameters
@@ -107,6 +109,7 @@ bool Initialize(size_t argc, LPCTSTR* argv)
 		("sample-mesh", boost::program_options::value(&OPT::fSampleMesh)->default_value(0.f), "uniformly samples points on a mesh (0 - disabled, <0 - number of points, >0 - sample density per square unit)")
 		("filter-point-cloud", boost::program_options::value(&OPT::thFilterPointCloud)->default_value(0), "filter dense point-cloud based on visibility (0 - disabled)")
 		("fusion-mode", boost::program_options::value(&OPT::nFusionMode)->default_value(0), "depth map fusion mode (-2 - fuse disparity-maps, -1 - export disparity-maps only, 0 - depth-maps & fusion, 1 - export depth-maps only)")
+		("is-custom,c", boost::program_options::value(&OPT::bIsCustomMode)->default_value(true), "is custom point cloud data")
 		;
 
 	// hidden options, allowed both on command line and
@@ -238,7 +241,9 @@ int main(int argc, LPCTSTR* argv)
 	}
 	// load and estimate a dense point-cloud
 	// 接受SLAM位姿的话将下面这行代码的屏蔽符去掉
+	/*
 //#define use_custom_pose   //使用SLAM位姿
+
 #ifdef use_custom_pose
     if(!load_scene(string(MAKE_PATH_SAFE(OPT::strInputFileName)),scene))
 		return EXIT_FAILURE;
@@ -246,6 +251,18 @@ int main(int argc, LPCTSTR* argv)
 	if (!scene.Load(MAKE_PATH_SAFE(OPT::strInputFileName)))
 		return EXIT_FAILURE;
 #endif
+*/
+    if(OPT::bIsCustomMode)
+	{
+		if(!load_scene(string(MAKE_PATH_SAFE(OPT::strInputFileName)),scene))
+		return EXIT_FAILURE;
+
+	}else
+	{
+		if (!scene.Load(MAKE_PATH_SAFE(OPT::strInputFileName)))
+		return EXIT_FAILURE;
+
+	}
 	if (scene.pointcloud.IsEmpty()) {
 		VERBOSE("error: empty initial point-cloud");
 		return EXIT_FAILURE;

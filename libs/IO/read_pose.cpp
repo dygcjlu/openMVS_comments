@@ -62,6 +62,8 @@ bool save_pointcloud_obj(string name, vector<POINT3F> points,int num_keyframes,R
     return true;
 }
 
+
+
 bool read_mvs_pose(string file,MVSPOSE &mvs_pose)
 {
 	std::ifstream fin;
@@ -71,6 +73,8 @@ bool read_mvs_pose(string file,MVSPOSE &mvs_pose)
 		cout<<"can't open pose file"<<endl;
 		return false;
 	}
+
+	PointCloud tmpPointcloud;
 	//vector<string>imageLists;
 	//vector<Cali> camerapara;
 	int num_images = 0;
@@ -125,6 +129,8 @@ bool read_mvs_pose(string file,MVSPOSE &mvs_pose)
         POINT3F  Q(Ow[0],Ow[1],Ow[2]);
         points.push_back(Q);
 		mvs_pose.poses.push_back(pose);
+
+		tmpPointcloud.points.AddConstruct(Ow[0],Ow[1],Ow[2]);
 	}
 	RGB color(0,255,0);
 //    save_pointcloud_obj("/home/wangwen/Desktop/三维重建/MVS/data/track_platform.obj", points,mvs_pose.poses.size(),color);
@@ -164,8 +170,12 @@ bool read_mvs_pose(string file,MVSPOSE &mvs_pose)
 		}
         POINT3F  Q(x,y,z);
         points.push_back(Q);
+
+		tmpPointcloud.points.AddConstruct(x, y, z);
 		
 	}
+
+	tmpPointcloud.Save(string(WORKING_FOLDER) + "/source_pose_and_cloud.ply");
     save_pointcloud_obj(string(WORKING_FOLDER) + "/track.obj", points,mvs_pose.poses.size(),color);
 	return true;
 }
@@ -254,6 +264,8 @@ bool load_scene(string file,Scene &scene)
 	}
 //    RGB color(255,0,0);
 //    save_pointcloud_obj(file + "/track_1.obj", points,mvs_pose.poses.size(),color);
+
+    scene.pointcloud.Save(string(WORKING_FOLDER) + "/source_sparse_cloud.ply");
 	return true;
 }
 //从关联文件中提取这些需要加载的图像的路径和时间戳

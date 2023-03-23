@@ -37,3 +37,6 @@ CMakeSettings.json
 out/
 bin/
 binaries/
+make_r/
+make_d/
+vcglib/

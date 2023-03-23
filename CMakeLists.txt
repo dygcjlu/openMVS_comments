@@ -18,6 +18,21 @@ endif()
 # ${OpenMVS_BINARY_DIR}.
 PROJECT(OpenMVS)
 
+
+MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" )
+   MESSAGE("set -g flag")
+   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -Wall   -O0 -g -march=native ")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall   -O0 -g -march=native")
+   #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -Wall  -O3 -march=native ")
+   #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall   -O3 -march=native")
+endif()
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -fno-stack-protector")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-stack-protector")
+
+
 set(OpenMVS_MAJOR_VERSION 1)
 set(OpenMVS_MINOR_VERSION 1)
 set(OpenMVS_PATCH_VERSION 1)

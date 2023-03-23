@@ -1,0 +1,22 @@
+cmake .. -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_BUILD_TYPE=Release  -DOpenMVS_USE_CUDA=OFF -DVCG_ROOT=/media/xxd/Data2/3d/stereo/mygithub/openMVS_comments/vcglib
+
+
+
+/media/xxd/Data2/3d/stereo/mygithub/openMVS_comments/make_d/bin/Viewer /media/xxd/Data2/datasets/3d/rgbd_dataset_freiburg3_structure_texture_far/vms/depth0030.dmap
+
+
+
+./DensifyPointCloud -w /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_long_office_household/vms --fusion-mode 0\
+ --verbosity 0 --is-custom 1 -i /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_long_office_household/slam/sfm.txt -o test_dense_000.mvs
+
+
+ 
+./DensifyPointCloud -w /media/xxd/Data2/3d/stereo/openMVS_sample --fusion-mode 0\
+ --verbosity 0 --is-custom 0 -i /media/xxd/Data2/3d/stereo/openMVS_sample/scene.mvs -o test_dense_000.mvs
+
+
+./InterfaceCOLMAP -i /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/colmap -o /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/mvs/scene.mvs --image-folder /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/keyframe/
+./DensifyPointCloud --is-custom 0 -w /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/mvs  -i scene.mvs -o test_dense_000.mvs
+./ReconstructMesh -w /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/mvs -i test_dense_000.mvs -o test_mesh_000.mvs
+./RefineMesh -w /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/mvs -i test_mesh_000.mvs -o test_refinemesh_000.mvs
+./TextureMesh -w /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/mvs -i test_refinemesh_000.mvs -o test_texture_000.mvs
