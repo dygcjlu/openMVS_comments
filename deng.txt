@@ -20,3 +20,39 @@ cmake .. -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_BUILD_TYPE=Release  -DOpenMVS_
 ./ReconstructMesh -w /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/mvs -i test_dense_000.mvs -o test_mesh_000.mvs
 ./RefineMesh -w /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/mvs -i test_mesh_000.mvs -o test_refinemesh_000.mvs
 ./TextureMesh -w /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/mvs -i test_refinemesh_000.mvs -o test_texture_000.mvs
+
+
+
+
+./DensifyPointCloud -w /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/mvs_old --fusion-mode 0\
+ --verbosity 4 --is-custom 1 -i /media/xxd/Data2/datasets/3d/TUM/rgbd_dataset_freiburg3_structure_texture_far/slam/sfm.txt -o test_dense_000.mvs
+
+
+docker run -it -v /media/xxd/Data2/3d/stereo/mygithub:/host ubuntu:16.04 /bin/bash
+apt install vim
+modify /etc/apt/sources.list
+apt install build-essential
+
+
+
+/////////// docker 
+docker run -w /working -v /media/xxd/Data2/3d/stereo/mygithub:/working -it openmvs/openmvs-ubuntu:latest /bin/bash
+
+cmake .. -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_BUILD_TYPE=Release  -DOpenMVS_USE_CUDA=OFF -DVCG_ROOT=/vcglib
+
+./DensifyPointCloud -w /working/data/slam/mvs_old --fusion-mode 0 --verbosity 4 --is-custom 1 -i /working/data/slam/sfm.txt -o test_dense_000.mvs
+./ReconstructMesh -w /working/data/slam/mvs_old -i test_dense_000.mvs -o test_mesh_000.mvs
+./RefineMesh -w /working/data/slam/mvs_old -i test_mesh_000.mvs -o test_refinemesh_000.mvs
+./TextureMesh -w /working/data/slam/mvs_old -i test_refinemesh_000.mvs -o test_texture_000.mvs
+
+
+./DensifyPointCloud -w /working/data/slam_custom/mvs --fusion-mode 0 --verbosity 4 --is-custom 1 -i /working/data/slam_custom/sfm.txt -o test_dense_000.mvs
+./ReconstructMesh -w /working/data/slam_custom/mvs -i test_dense_000.mvs -o test_mesh_000.mvs
+./RefineMesh -w /working/data/slam_custom/mvs -i test_mesh_000.mvs -o test_refinemesh_000.mvs
+./TextureMesh -w /working/data/slam_custom/mvs -i test_refinemesh_000.mvs -o test_texture_000.mvs
+
+./DensifyPointCloud -w /working/data/slam_pig_lung/mvs --fusion-mode 0 --verbosity 4 --is-custom 1 -i /working/data/slam_pig_lung/sfm.txt -o test_dense_000.mvs
+./ReconstructMesh -w /working/data/slam_pig_lung/mvs -i test_dense_000.mvs -o test_mesh_000.mvs
+./RefineMesh -w /working/data/slam_pig_lung/mvs -i test_mesh_000.mvs -o test_refinemesh_000.mvs
+./TextureMesh -w /working/data/slam_pig_lung/mvs -i test_refinemesh_000.mvs -o test_texture_000.mvs
+./TextureMesh -w /working/data/slam_pig_lung/mvs -i test_mesh_000.mvs -o test_origin_texture_000.mvs

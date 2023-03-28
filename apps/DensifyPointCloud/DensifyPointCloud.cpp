@@ -28,7 +28,7 @@
  *      that material or in the Appropriate Legal Notices displayed by works
  *      containing it.
  */
-
+#include <fstream>
 #include "../../libs/MVS/Common.h"
 #include "../../libs/MVS/Scene.h"
 #include <boost/program_options.hpp>
@@ -214,6 +214,41 @@ void Finalize()
 	CLOSE_LOG();
 }
 
+void saveImgPose(std::string strFileName, Scene& scene)
+{
+	ofstream f;
+    f.open(strFileName.c_str());
+
+	FOREACH(p, scene.platforms) 
+	{
+		MVS::Platform& platform = scene.platforms[p];
+		f<<"platform:"<<p<<" pose:"<<std::endl;
+
+		FOREACH(c, platform.poses) 
+		{
+			MVS::Platform::Pose& pose = platform.poses[c];
+
+			f<<"camera id:"<<c<<" R: ";
+			for (int n = 0; n < 9; n++)
+			{
+				f<<pose.R.val[n]<<" ";
+				
+			}
+			f<<std::endl <<"t: ";
+
+			for (int j = 0; j < 3; ++j)
+			{
+				f<<pose.C.ptr()[j]<<" ";
+			}
+
+		}
+		f<<std::endl;
+	}
+
+	f.close();
+
+}
+
 int main(int argc, LPCTSTR* argv)
 {
 	#ifdef _DEBUGINFO
@@ -267,6 +302,11 @@ int main(int argc, LPCTSTR* argv)
 		VERBOSE("error: empty initial point-cloud");
 		return EXIT_FAILURE;
 	}
+	////
+	std::string strPoseFile  = "./pose_begin.txt";
+	saveImgPose(strPoseFile, scene);
+
+	////
 	if (OPT::thFilterPointCloud < 0) {
 		// filter point-cloud based on camera-point visibility intersections
 		scene.PointCloudFilter(OPT::thFilterPointCloud);
@@ -296,6 +336,10 @@ int main(int argc, LPCTSTR* argv)
 	if (VERBOSITY_LEVEL > 2)
 		scene.ExportCamerasMLP(baseFileName+_T(".mlp"), baseFileName+_T(".ply"));
 	#endif
+
+	std::string strPoseFileEnd  = "./pose_end.txt";
+	saveImgPose(strPoseFileEnd, scene);
+
 
 	Finalize();
 	return EXIT_SUCCESS;

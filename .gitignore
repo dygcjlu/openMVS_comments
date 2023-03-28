@@ -40,3 +40,4 @@ binaries/
 make_r/
 make_d/
 vcglib/
+make_docker/
