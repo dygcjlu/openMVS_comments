@@ -149,6 +149,7 @@ if(EIGEN_FOUND)
 	SET(_USE_EIGEN TRUE)
 endif()
 
+set(OpenCV_DIR /media/jason/Data2/opencv/opencv_3_4_5/build_release/install/share/OpenCV)
 FIND_PACKAGE(OpenCV ${SYSTEM_PACKAGE_REQUIRED})
 if(OpenCV_FOUND)
 	INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})

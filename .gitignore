@@ -38,6 +38,7 @@ out/
 bin/
 binaries/
 make_r/
-make_d/
+make_*/
 vcglib/
 make_docker/
+data/

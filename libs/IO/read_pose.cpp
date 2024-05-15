@@ -199,7 +199,7 @@ bool load_scene(string file,Scene &scene)
 		int idx = count; //true idx
 		MVS::Image& image = scene.images.AddEmpty();
 
-        string name=string(WORKING_FOLDER)+"images/"+mvs_pose.images_name[idx]+".png";
+        string name=string(WORKING_FOLDER)+"keyframe/left/"+mvs_pose.images_name[idx]+".png";
         image.name=name;
         image.platformID = scene.platforms.GetSize();
         image.cameraID = 0;

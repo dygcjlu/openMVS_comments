@@ -34,6 +34,9 @@ modify /etc/apt/sources.list
 apt install build-essential
 
 
+cmake .. -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_BUILD_TYPE=Release  -DOpenMVS_USE_CUDA=OFF -DVCG_ROOT=../vcglib
+
+
 
 /////////// docker 
 docker run -w /working -v /media/xxd/Data2/3d/stereo/mygithub:/working -it openmvs/openmvs-ubuntu:latest /bin/bash
@@ -51,8 +54,33 @@ cmake .. -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_BUILD_TYPE=Release  -DOpenMVS_
 ./RefineMesh -w /working/data/slam_custom/mvs -i test_mesh_000.mvs -o test_refinemesh_000.mvs
 ./TextureMesh -w /working/data/slam_custom/mvs -i test_refinemesh_000.mvs -o test_texture_000.mvs
 
-./DensifyPointCloud -w /working/data/slam_pig_lung/mvs --fusion-mode 0 --verbosity 4 --is-custom 1 -i /working/data/slam_pig_lung/sfm.txt -o test_dense_000.mvs
-./ReconstructMesh -w /working/data/slam_pig_lung/mvs -i test_dense_000.mvs -o test_mesh_000.mvs
-./RefineMesh -w /working/data/slam_pig_lung/mvs -i test_mesh_000.mvs -o test_refinemesh_000.mvs
-./TextureMesh -w /working/data/slam_pig_lung/mvs -i test_refinemesh_000.mvs -o test_texture_000.mvs
-./TextureMesh -w /working/data/slam_pig_lung/mvs -i test_mesh_000.mvs -o test_origin_texture_000.mvs
+#
+./DensifyPointCloud -w /working/data/0410/1 --fusion-mode 0 --verbosity 4 --is-custom 1 -i /working/data/0410/1/sfm.txt -o test_dense_000.mvs 
+./ReconstructMesh -w /working/data/0410/1 -i test_dense_000.mvs -o test_mesh_000.mvs
+./RefineMesh -w /working/data/0410/1 -i test_mesh_000.mvs -o test_refinemesh_000.mvs
+./TextureMesh -w /working/data/0410/1 -i test_refinemesh_000.mvs -o test_texture_000.mvs
+
+
+#39:45 --- 43:50 
+./DensifyPointCloud -w /working/data/0410/4 --fusion-mode 0 --verbosity 4 --is-custom 1 -i /working/data/0410/4/sfm.txt -o test_dense_000.mvs 
+#44:05 --- 44:34
+./ReconstructMesh -w /working/data/0410/4 -i test_dense_000.mvs -o test_mesh_000.mvs
+#44:54 --- 53：00：
+./RefineMesh -w /working/data/0410/4 -i test_mesh_000.mvs -o test_refinemesh_000.mvs
+
+./TextureMesh -w /working/data/0410/4 -i test_refinemesh_000.mvs -o test_texture_000.mvs
+
+
+#############################320240407
+docker run -w /working -v /media/jason/Data2/3d/stereo/mygithub/openMVS_comments:/working -it openmvs/openmvs-ubuntu:latest
+
+
+cmake .. -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_BUILD_TYPE=Release  -DOpenMVS_USE_CUDA=OFF -DVCG_ROOT=/vcglib
+cmake .. -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_BUILD_TYPE=Release  -DOpenMVS_USE_OPENGL=ON -DOpenMVS_USE_CUDA=ON -DVCG_ROOT=/vcglib
+
+/media/jason/Data2/3d/stereo/mygithub/openMVS_comments/make_r/install/bin/OpenMVS/DensifyPointCloud -w /media/jason/Data2/datasets/3d/mine/0410/5/for_slam \
+--fusion-mode 0 --verbosity 4 --is-custom 1 -i /media/jason/Data2/datasets/3d/mine/0410/5/for_slam/sfm.txt -o test_dense_000.mvs 
+
+
+/working/make_release/bin/DensifyPointCloud -w /working/data --fusion-mode 0 --verbosity 4 --is-custom 1 -i /working/data/sfm.txt -o test_dense_000.mvs 
+
